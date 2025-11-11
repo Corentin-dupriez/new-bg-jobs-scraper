@@ -10,7 +10,9 @@ class JobsSpider(scrapy.Spider):
         ]
 
         for url in urls:
-            yield scrapy.Request(url=url, callback=self.parse)
+            yield scrapy.Request(
+                url=url, meta={"playwright": True}, callback=self.parse
+            )
 
     def parse(self, response):
         page = response.url
@@ -30,3 +32,12 @@ class JobsSpider(scrapy.Spider):
                     "div.tech-stack-item img::attr(title)"
                 ).getall(),
             }
+
+        next_page = response.css("a.facetwp-page.next::attr(data-page)").get()
+
+        if next_page is not None:
+            next_page = response.urljoin(f"?_paged={next_page}")
+            print(next_page)
+            yield scrapy.Request(
+                next_page, meta={"playwright": True}, callback=self.parse
+            )
