@@ -14,12 +14,21 @@ class JobsSpider(scrapy.Spider):
                 url=url, meta={"playwright": True}, callback=self.parse
             )
 
+    async def parse_listing(self, response):
+        item = response.meta["item"]
+
+        item["description"] = response.css("div.job_description").get()
+        item["date_posted"] = response.css("li.date-posted time::attr(datetime)").get()
+
+        yield item
+
     def parse(self, response):
         page = response.url
         self.log(f"Crawled {page}")
 
         for listing in response.css("div.job-list-item"):
-            yield {
+            listing_url = listing.css("a.overlay-link::attr(href)").get()
+            item = {
                 "company-name": listing.css("span.company-name::text").get(),
                 "job_title": listing.css("h6.job-title::text").get(),
                 "location": listing.xpath(
@@ -31,7 +40,17 @@ class JobsSpider(scrapy.Spider):
                 "tech_stack": listing.css(
                     "div.tech-stack-item img::attr(title)"
                 ).getall(),
+                "listing_url": listing_url,
             }
+
+            if listing_url is not None:
+                yield scrapy.Request(
+                    url=response.urljoin(listing_url),
+                    callback=self.parse_listing,
+                    meta={"item": item},
+                )
+            else:
+                yield item
 
         next_page = response.css("a.facetwp-page.next::attr(data-page)").get()
 
