@@ -1,0 +1,6 @@
+WITH company_info AS (
+  select company_name
+  FROM {{ ref('staging_jobs') }}
+)
+
+select * from company_info
