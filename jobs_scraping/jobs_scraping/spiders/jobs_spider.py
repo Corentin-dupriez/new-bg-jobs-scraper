@@ -1,4 +1,5 @@
 import scrapy
+from datetime import datetime
 
 
 class JobsSpider(scrapy.Spider):
@@ -41,6 +42,7 @@ class JobsSpider(scrapy.Spider):
                     "div.tech-stack-item img::attr(title)"
                 ).getall(),
                 "listing_url": listing_url,
+                "date_scraped": datetime.now().date(),
             }
 
             if listing_url is not None:

@@ -32,14 +32,14 @@ class DuckDbPipeline:
                 tech_stack TEXT[],
                 listing_url TEXT,
                 description TEXT,
-                date_posted DATE
-            )
+                date_posted DATE,
+                date_scraped DATE)
                           """)
 
     def process_item(self, item, spider):
         self.conn.execute(
             """
-            INSERT INTO jobs VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO jobs VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                           """,
             (
                 item.get("company_name"),
@@ -50,6 +50,7 @@ class DuckDbPipeline:
                 item.get("listing_url"),
                 item.get("description"),
                 item.get("date_posted"),
+                item.get("date_scraped"),
             ),
         )
         return item

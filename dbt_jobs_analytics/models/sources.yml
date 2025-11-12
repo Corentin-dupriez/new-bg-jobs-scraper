@@ -1,0 +1,29 @@
+version: 2
+
+sources:
+  - name: main
+    database: main
+    schema: main
+    tables:
+      - name: jobs
+        description: ""
+        columns:
+          - name: company_name
+            description: ""
+          - name: job_title
+            description: ""
+          - name: location
+            description: ""
+          - name: salary
+            description: ""
+          - name: tech_stack
+            description: ""
+          - name: listing_url
+            description: ""
+          - name: description
+            description: ""
+          - name: date_posted
+            description: ""
+          - name: date_scraped
+            description: ""
+

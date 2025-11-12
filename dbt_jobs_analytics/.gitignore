@@ -1,5 +1,3 @@
-venv/
-*.duckdb
 
 target/
 dbt_packages/
