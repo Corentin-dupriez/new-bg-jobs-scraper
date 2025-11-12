@@ -2,7 +2,6 @@ version: 2
 
 sources:
   - name: main
-    database: main
     schema: main
     tables:
       - name: jobs
