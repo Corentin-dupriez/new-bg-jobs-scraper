@@ -1,0 +1,32 @@
+version: 2
+
+models: 
+  - name: staging_jobs
+    description: "A staging model to retrieve the data from dbt"
+    columns: 
+      - name: company_name
+        description: "The name of the company"
+        data_tests: 
+          - not_null
+      - name: job_title
+        description: "The position advertised in the listing"
+      - name: location
+        description: "The location of the position"
+        data_tests: 
+          - not_null
+      - name: min_salary
+        description: "The minimum amount in the salary range, or 'Not communicated'"
+        data_tests: 
+          - not_null
+      - name: max_salary
+        description: "The maximum amount in the salary range, or 'Not communicated'"
+        data_tests: 
+          - not_null
+      - name: tech_stack
+        description: "A list of technical requirements for the position"
+      - name: listing_url
+        description: "The URL of the listing"
+      - name: date_posted
+        description: "The date on which the listing was created"
+      - name: date_scraped
+        description: "The date on which the listing was scraped"
