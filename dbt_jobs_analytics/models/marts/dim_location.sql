@@ -1,7 +1,7 @@
 WITH location as (
-  SELECT distinct(location)
+  SELECT distinct(location) as location_name
   from {{ ref('staging_jobs') }}
 )
 
-select * 
+select location_name 
 from location
