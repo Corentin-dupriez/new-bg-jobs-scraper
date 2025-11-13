@@ -1,5 +1,5 @@
 WITH company_info AS (
-  select company_name
+  select distinct(company_name)
   FROM {{ ref('staging_jobs') }}
 )
 
