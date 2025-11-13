@@ -30,7 +30,7 @@ class JobsSpider(scrapy.Spider):
         for listing in response.css("div.job-list-item"):
             listing_url = listing.css("a.overlay-link::attr(href)").get()
             item = {
-                "company-name": listing.css("span.company-name::text").get(),
+                "company_name": listing.css("span.company-name::text").get(),
                 "job_title": listing.css("h6.job-title::text").get(),
                 "location": listing.xpath(
                     "normalize-space(.//span[contains(@class, 'badge')])"

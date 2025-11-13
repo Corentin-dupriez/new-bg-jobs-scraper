@@ -2,5 +2,6 @@ import duckdb
 
 con = duckdb.connect("jobs.duckdb")
 
-con.execute("select * from dim_date")
+
+con.execute("select distinct(company_name) from jobs")
 print(con.fetchall())
