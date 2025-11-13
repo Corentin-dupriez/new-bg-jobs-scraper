@@ -29,6 +29,11 @@ models:
   - name: dim_company
     description: "Dimension representing the company of the listing"
     columns: 
+      - name: company_id
+        description: "The technical ID of the row"
+        tests: 
+          - unique
+          - not_null
       - name: company_name
         description: "The name of the company"
         tests: 

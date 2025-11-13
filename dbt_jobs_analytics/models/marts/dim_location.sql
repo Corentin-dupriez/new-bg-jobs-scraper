@@ -3,5 +3,7 @@ WITH location as (
   from {{ ref('staging_jobs') }}
 )
 
-select location_name 
+select 
+{{ dbt_utils.generate_surrogate_key(['location_name'])}} as location_id,
+location_name 
 from location
