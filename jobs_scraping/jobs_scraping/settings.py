@@ -30,7 +30,6 @@ ROBOTSTXT_OBEY = True
 
 # Concurrency and throttling settings
 # CONCURRENT_REQUESTS = 16
-CONCURRENT_REQUESTS_PER_DOMAIN = 1
 DOWNLOAD_DELAY = 1
 
 # Disable cookies (enabled by default)
@@ -92,3 +91,10 @@ ITEM_PIPELINES = {
 
 # Set settings whose default value is deprecated to a future-proof value
 FEED_EXPORT_ENCODING = "utf-8"
+
+CONCURRENT_REQUESTS = 15
+CONCURRENT_REQUESTS_PER_DOMAIN = 8
+PLAYWRIGHT_MAX_CONTEXTS = 2
+PLAYWRIGHT_MAX_PAGES = 8
+
+PLAYWRIGHT_LAUNCH_OPTIONS = {"headless": True}

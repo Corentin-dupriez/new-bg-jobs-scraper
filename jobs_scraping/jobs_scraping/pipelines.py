@@ -1,10 +1,3 @@
-# Define your item pipelines here
-#
-# Don't forget to add your pipeline to the ITEM_PIPELINES setting
-# See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-
-
-# useful for handling different item types with a single interface
 import duckdb
 from itemadapter import ItemAdapter
 
@@ -33,13 +26,23 @@ class DuckDbPipeline:
                 listing_url TEXT,
                 description TEXT,
                 date_posted DATE,
+                categories TEXT[],
+                company_activity TEXT,
+                company_sector TEXT,
+                company_central_office TEXT,
+                company_creation_date TEXT,
+                number_employees TEXT,
+                implemented_in_bulgaria_date TEXT,
+                number_employees_in_bulgaria TEXT,
+                offices_in_bulgaria TEXT,
+                it_employees_in_bulgaria TEXT,
                 date_scraped DATE)
                           """)
 
     def process_item(self, item, spider):
         self.conn.execute(
             """
-            INSERT INTO jobs VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO jobs VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                           """,
             (
                 item.get("company_name"),
@@ -50,6 +53,16 @@ class DuckDbPipeline:
                 item.get("listing_url"),
                 item.get("description"),
                 item.get("date_posted"),
+                item.get("categories"),
+                item.get("activity"),
+                item.get("sector"),
+                item.get("central_office"),
+                item.get("creation_date"),
+                item.get("number_employees"),
+                item.get("implemented_in_bulgaria_date"),
+                item.get("number_employees_bulgaria"),
+                item.get("offices_in_bulgaria"),
+                item.get("it_employees_in_bulgaria"),
                 item.get("date_scraped"),
             ),
         )
