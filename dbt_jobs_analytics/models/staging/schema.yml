@@ -28,5 +28,25 @@ models:
         description: "The URL of the listing"
       - name: date_posted
         description: "The date on which the listing was created"
+      - name: categories
+        description: "The categories of the listing"
+      - name: company_activity
+        description: "The main activity of the company"
+      - name: company_sector
+        description: "The main sector of the company"
+      - name: company_central_office
+        description: "The central office location"
+      - name: company_creation_date
+        description: "The year of creation of the company"
+      - name: number_employees
+        description: "The total number of employees of the company internationally"
+      - name: implemented_in_bulgaria_date
+        description: "The year of implementation of the company in Bulgaria"
+      - name: number_employees_in_bulgaria
+        description: "The total number of employees in Bulgaria"
+      - name: offices_in_bulgaria
+        description: "The cities where the company has offices in Bulgaria"
+      - name: it_employees_in_bulgaria
+        description: "The number of employees in the IT departement of the company in Bulgaria"
       - name: date_scraped
         description: "The date on which the listing was scraped"

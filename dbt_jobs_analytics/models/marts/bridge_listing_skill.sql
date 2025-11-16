@@ -1,8 +1,9 @@
 with jobs as (
-  select listing_id, 
+  select 
+  {{dbt_utils.generate_surrogate_key(['listing_url', 'date_scraped'])}} as listing_id, 
   listing_url, 
   tech_stack
-  from {{ ref('fact_listings') }}
+  from {{ ref('staging_jobs') }}
 ),
 
 flattened as (
