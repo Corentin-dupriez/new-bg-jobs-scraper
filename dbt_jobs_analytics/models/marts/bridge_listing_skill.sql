@@ -20,7 +20,7 @@ skills as (
 
 select 
   listing_id,
-  s.skill_id 
+  s.skill_id
 from flattened f
 join skills s 
   on s.skill_name = f.skill_name

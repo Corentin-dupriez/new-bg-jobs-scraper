@@ -15,6 +15,7 @@ with dates as (
 )
 
 select 
+  {{ dbt_utils.generate_surrogate_key(['j.listing_url', 'j.date_scraped']) }} as listing_id,
   c.company_id,
   job_title, 
   location_id,

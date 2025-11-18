@@ -5,65 +5,128 @@ models:
     description: "A list of the unique locations contained in the scraped listings"
     columns:
       - name: location_id
-        description: "The identifier of the location"
+        description: "The surrogate key used to join with fact_listings"
       - name: location_name
-        description: "The city name of WFH situation"
+        description: "The city where the job is located or marked as remote (Work from Home)"
   - name: dim_date
-    description: "A table representing the date dimension"
+    description: "Date dimension containing date attributes used for posting and scraping"
     columns: 
       - name: date_id
-        description: "The identifier of the date"
+        description: "The surrogate key used to join with fact_listings"
         tests: 
           - unique 
           - not_null
       - name: day
-        description: "The day part of the date"
+        description: "Day of the month (1-31)"
       - name: month
-        description: "The month part of the date"
+        description: "Month of the year (1-12)"
       - name: year
-        description: "The year part of the date"
+        description: "Four-digit year"
       - name: week
-        description: "The week number of the year"
+        description: "ISO week number of the year"
       - name: weekday
-        description: "The week days's full name"
+        description: "Name of the day of the week (e.g Monday)"
       - name: is_weekend
-        description: "Indicates if the day is a weekend day or not"
+        description: "Boolean indicating if the date falls on a weekend"
   - name: dim_company
-    description: "Dimension representing the company of the listing"
+    description: "Dimension representing companies associated with job listings"
     columns: 
       - name: company_id
-        description: "The technical ID of the row"
+        description: "Surrogate key used to join with fact_listings"
         tests: 
           - unique
           - not_null
       - name: company_name
-        description: "The name of the company"
+        description: "Official name of the company"
         tests: 
+          - unique
+          - not_null
+      - name: company_activity
+        description: "Primary activity or business area of the company"
+      - name: company_sector
+        description: "The sector or industry classification of the company"
+      - name: company_central_office
+        description: "The location of the company's central office"
+      - name: company_creation_date
+        description: "The creation year of the company"
+      - name: number_employees
+        description: "The total number of employees of the company (globally)"
+      - name: implemented_in_bulgaria_date
+        description: "The year of implementation in Bulgaria of the company"
+      - name: number_employees_in_bulgaria
+        description: "The total number of employees of the company in Bulgaria"
+      - name: offices_in_bulgaria
+        description: "The cities where the company has offices in Bulgaria"
+      - name: "it_employees_in_bulgaria"
+        description: "The number of employees of the IT departement of the company in Bulgaria"
+
+  - name: dim_skills
+    description: "Dimension representing the skills required for a listing"
+    columns:
+      - name: skill_id
+        description: "Surrogate key used to join with bridge table bridge_listing_skill"
+        tests: 
+          - unique 
+          - not_null
+      - name: skill_name 
+        description: "Name of the skill (e.g Python, SQL, DevOps)"
+        tests: 
+          - unique 
+          - not_null
+
+  - name: dim_categories
+    description: "Dimension representing the jobs listing categories"
+    columns: 
+      - name: category_id
+        description: "Surrogate key used to join with bridge table bridge_listing_category"
+        tests: 
+          - unique
+          - not_null
+      - name: category_name
+        description: "Name of the category (e.g Back-End development, Python)"
+        tests:
           - unique
           - not_null
   - name: fact_listings
-    description: "The jobs listings fact table"
+    description: "Fact table containing job listings details at the listing level"
     columns:
       - name: listing_id
-        description: "The id of the listing based on URL and date scraped"
-        tests: 
-          - unique
-          - not_null
+        description: "Surrogate key generated from listing_url and date_scraped"
       - name: company_id
-        description: "The identifier of the company to dim_company"
+        description: "Foreign key to dim_company"
       - name: job_title
-        description: "The name of the position"
+        description: "Title of the position"
       - name: location_id
-        description: "The id of the location to dim_location"
+        description: "Foreign key to dim_location"
       - name: min_salary
-        description: "The minimum salary proposed"
+        description: "Minimum salary proposed for the job (currency: BGN)"
       - name: max_salary
-        description: "The maximum salary proposed"
+        description: "Maximim salary proposed for the job(currency: BGN)"
       - name: listing_url
         description: "The URL of the listing on dev.bg"
       - name: description
         description: "The description of the position"
       - name: date_posted_id
-        description: "The ID of the date on which the listing was posted"
+        description: "Foreign key to dim_date representing the posting date"
       - name: date_scraped_id 
-        description: "The ID of the date on which the listing was scraped"
+        description: "Foreign key to dim_date representing the scraping date"
+
+  - name: bridge_listing_skill
+    description: "Bridge table linking job listings to skills (many-to-many)"
+    columns: 
+      - name: listing_id
+        description: "Surrogate key of the job listing based on listing_url and scraped_date, used to join with fact_listings"
+        tests: 
+          - not_null
+      - name: skill_id
+        description: "Surrogate key of the skill, used to join with dim_skills"
+        tests: 
+          - not_null
+
+  - name: bridge_listing_category
+    description: "Bridge table linking job listings to categories (many-to-many)"
+    columns: 
+      - name: listing_id
+        description: "Surrogate key of the job listing, used to link to fact_listings"
+      - name: category_id
+        description: "Surrogate key of the category, used to join to dim_categories"
